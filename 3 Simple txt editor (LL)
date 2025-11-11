@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Node {
+    char line[100];
+    struct Node *next;
+} Node;
+Node *head = NULL;
+
+Node* create(char *t) {
+    Node *n = malloc(sizeof(Node));
+    strcpy(n->line, t);
+    n->next = NULL;
+    return n;
+}
+
+void insertEnd(char *t) {
+    Node *n = create(t);
+    if (!head) head = n;
+    else {
+        Node *tmp = head;
+        while (tmp->next) tmp = tmp->next;
+        tmp->next = n;
+    }
+}
+
+void deleteFront() {
+    if (!head) printf("Empty!\n");
+    else {
+        Node *tmp = head;
+        head = head->next;
+        printf("Deleted: %s\n", tmp->line);
+        free(tmp);
+    }
+}
+
+void display() {
+    Node *tmp = head;
+    if (!tmp) printf("Empty!\n");
+    else while (tmp) { printf("%s\n", tmp->line); tmp = tmp->next; }
+}
+
+int main() {
+    int ch;
+    char text[100];
+    do {
+        printf("\n1.Insert  2.Delete  3.Display  4.Exit: ");
+        scanf("%d", &ch);
+        getchar();
+        switch (ch) {
+            case 1: printf("Enter line: "); fgets(text, 100, stdin); text[strcspn(text, "\n")] = '\0'; insertEnd(text); break;
+            case 2: deleteFront(); break;
+            case 3: display(); break;
+            case 4: printf("Exit\n"); break;
+            default: printf("Invalid!\n");
+        }
+    } while (ch != 4);
+}
