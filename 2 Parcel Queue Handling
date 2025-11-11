@@ -1,0 +1,41 @@
+#include <stdio.h>
+#define MAX 5
+int queue[MAX], front = -1, rear = -1;
+
+void addParcel(int p) {
+    if (rear == MAX - 1) printf("Queue Full!\n");
+    else {
+        if (front == -1) front = 0;
+        queue[++rear] = p;
+        printf("Parcel %d added.\n", p);
+    }
+}
+
+void removeParcel() {
+    if (front == -1 || front > rear) printf("Queue Empty!\n");
+    else printf("Parcel %d dispatched.\n", queue[front++]);
+}
+
+void display() {
+    if (front == -1 || front > rear) printf("No parcels.\n");
+    else {
+        printf("Queue: ");
+        for (int i = front; i <= rear; i++) printf("%d ", queue[i]);
+        printf("\n");
+    }
+}
+
+int main() {
+    int ch, p;
+    do {
+        printf("\n1.Add  2.Remove  3.Display  4.Exit: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: printf("Enter parcel no: "); scanf("%d", &p); addParcel(p); break;
+            case 2: removeParcel(); break;
+            case 3: display(); break;
+            case 4: printf("Exit\n"); break;
+            default: printf("Invalid!\n");
+        }
+    } while (ch != 4);
+}
