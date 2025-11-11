@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node *top = NULL, *front = NULL, *rear = NULL;
+
+void push(int v) {
+    Node *n = malloc(sizeof(Node));
+    n->data = v; n->next = top; top = n;
+}
+
+void pop() {
+    if (!top) printf("Stack Empty!\n");
+    else {
+        Node *t = top; printf("Popped: %d\n", t->data);
+        top = t->next; free(t);
+    }
+}
+
+void enqueue(int v) {
+    Node *n = malloc(sizeof(Node));
+    n->data = v; n->next = NULL;
+    if (!rear) front = rear = n;
+    else { rear->next = n; rear = n; }
+}
+
+void dequeue() {
+    if (!front) printf("Queue Empty!\n");
+    else {
+        Node *t = front; printf("Deleted: %d\n", t->data);
+        front = front->next; if (!front) rear = NULL; free(t);
+    }
+}
+
+void displayStack() {
+    Node *t = top; printf("Stack: ");
+    while (t) { printf("%d ", t->data); t = t->next; }
+    printf("\n");
+}
+
+void displayQueue() {
+    Node *t = front; printf("Queue: ");
+    while (t) { printf("%d ", t->data); t = t->next; }
+    printf("\n");
+}
+
+int main() {
+    int ch, val, type;
+    printf("1.Stack  2.Queue: "); scanf("%d", &type);
+    do {
+        printf("\n1.Insert  2.Delete  3.Display  4.Exit: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: printf("Enter value: "); scanf("%d", &val);
+                    if (type==1) push(val); else enqueue(val); break;
+            case 2: if (type==1) pop(); else dequeue(); break;
+            case 3: if (type==1) displayStack(); else displayQueue(); break;
+            case 4: exit(0);
+            default: printf("Invalid!\n");
+        }
+    } while (1);
+}
