@@ -1,0 +1,46 @@
+#include <stdio.h>
+int adj[20][20], visited[20], n;
+
+void BFS(int start) {
+    int q[20], f = 0, r = 0;
+    for (int i = 0; i < n; i++) visited[i] = 0;
+    visited[start] = 1; q[r++] = start;
+    printf("BFS: ");
+    while (f < r) {
+        int u = q[f++]; printf("%d ", u);
+        for (int v = 0; v < n; v++)
+            if (adj[u][v] && !visited[v]) {
+                visited[v] = 1; q[r++] = v;
+            }
+    }
+    printf("\n");
+}
+
+void DFSUtil(int u) {
+    visited[u] = 1; printf("%d ", u);
+    for (int v = 0; v < n; v++)
+        if (adj[u][v] && !visited[v]) DFSUtil(v);
+}
+
+void DFS(int start) {
+    for (int i = 0; i < n; i++) visited[i] = 0;
+    printf("DFS: "); DFSUtil(start); printf("\n");
+}
+
+int main() {
+    int e, u, v, start, ch;
+    printf("Enter vertices: "); scanf("%d", &n);
+    printf("Enter edges: "); scanf("%d", &e);
+    for (int i = 0; i < e; i++) {
+        scanf("%d%d", &u, &v);
+        adj[u][v] = adj[v][u] = 1;
+    }
+    do {
+        printf("\n1.BFS  2.DFS  3.Exit: ");
+        scanf("%d", &ch);
+        if (ch == 1 || ch == 2) {
+            printf("Start node: "); scanf("%d", &start);
+            if (ch == 1) BFS(start); else DFS(start);
+        }
+    } while (ch != 3);
+}
