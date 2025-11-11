@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+#define SUBJECTS 5
+
+struct Student {
+    int rollNo;
+    char name[50], program[50], course[50];
+    float marks[SUBJECTS], total, average;
+};
+int count = 0;
+
+void addStudent(struct Student s[]) {
+    printf("Enter Roll No, Name, Program, Course: ");
+    scanf("%d %s %s %s", &s[count].rollNo, s[count].name, s[count].program, s[count].course);
+    s[count].total = 0;
+    for (int i = 0; i < SUBJECTS; i++) {
+        printf("Marks %d: ", i + 1);
+        scanf("%f", &s[count].marks[i]);
+        s[count].total += s[count].marks[i];
+    }
+    s[count].average = s[count].total / SUBJECTS;
+    count++;
+}
+
+void displayAll(struct Student s[]) {
+    printf("\nRoll  Name         Program     Course     Total   Average\n");
+    for (int i = 0; i < count; i++)
+        printf("%-5d %-12s %-10s %-10s %-7.2f %-7.2f\n", s[i].rollNo, s[i].name, s[i].program, s[i].course, s[i].total, s[i].average);
+}
+
+int main() {
+    struct Student s[MAX];
+    int ch;
+    do {
+        printf("\n1.Add  2.Display  3.Exit : ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: addStudent(s); break;
+            case 2: displayAll(s); break;
+            case 3: printf("Exiting...\n"); break;
+            default: printf("Invalid choice!\n");
+        }
+    } while (ch != 3);
+    return 0;
+}
