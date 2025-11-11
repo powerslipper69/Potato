@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct Node {
+    char name[50];
+    struct Node *left, *right;
+} Node;
+
+Node* create(char *n) {
+    Node *t = malloc(sizeof(Node));
+    strcpy(t->name, n);
+    t->left = t->right = NULL;
+    return t;
+}
+
+Node* insert(Node *r, char *n) {
+    if (!r) return create(n);
+    if (strcmp(n, r->name) < 0) r->left = insert(r->left, n);
+    else if (strcmp(n, r->name) > 0) r->right = insert(r->right, n);
+    return r;
+}
+
+void inorder(Node *r) {
+    if (r) { inorder(r->left); puts(r->name); inorder(r->right); }
+}
+
+int main() {
+    Node *root = NULL;
+    char name[50];
+    while (1) {
+        printf("Enter name (or end): ");
+        fgets(name, 50, stdin);
+        name[strcspn(name, "\n")] = '\0';
+        if (!strcmp(name, "end")) break;
+        root = insert(root, name);
+    }
+    printf("\nSorted Names:\n");
+    inorder(root);
+}
