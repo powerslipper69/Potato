@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+int seq(char a[][50], int n, char k[]) {
+    for (int i = 0; i < n; i++)
+        if (!strcmp(a[i], k)) return i;
+    return -1;
+}
+
+void sort(char a[][50], int n) {
+    char t[50];
+    for (int i = 0; i < n - 1; i++)
+        for (int j = i + 1; j < n; j++)
+            if (strcmp(a[i], a[j]) > 0) {
+                strcpy(t, a[i]); strcpy(a[i], a[j]); strcpy(a[j], t);
+            }
+}
+
+int bin(char a[][50], int n, char k[]) {
+    int l = 0, h = n - 1;
+    while (l <= h) {
+        int m = (l + h) / 2;
+        int c = strcmp(a[m], k);
+        if (c == 0) return m;
+        else if (c < 0) l = m + 1;
+        else h = m - 1;
+    }
+    return -1;
+}
+
+int main() {
+    char a[100][50], k[50];
+    int n, p;
+    printf("Enter number of contacts: ");
+    scanf("%d", &n); getchar();
+    for (int i = 0; i < n; i++) gets(a[i]);
+    printf("Enter name to search: ");
+    gets(k);
+    p = seq(a, n, k);
+    if (p != -1) printf("Sequential: Found at %d\n", p + 1);
+    else printf("Sequential: Not found\n");
+    sort(a, n);
+    p = bin(a, n, k);
+    if (p != -1) printf("Binary: Found at %d\n", p + 1);
+    else printf("Binary: Not found\n");
+}
